@@ -1,0 +1,36 @@
+name: Build & Deploy Image
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  PROJECT_ID: web-app-413516
+  SERVICE: web-app
+  REGION: us-east1
+
+jobs:
+  deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: 'actions/checkout@v4'
+
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: "Gradle: Build"
+        run: ./gradlew build
+
+      - name: "Gradle: Jib"
+        run: ./gradlew jib
