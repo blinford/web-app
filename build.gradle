@@ -26,6 +26,19 @@ tasks.named('test') {
 }
 
 publishing {
+	publications {
+		gpr(MavenPublication) {
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
+				}
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+			from components.java
+		}
+	}
 	repositories {
 		maven {
 			name = "GitHubPackages"
