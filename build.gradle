@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id 'maven-publish'
+	id 'com.google.cloud.tools.jib' version '3.4.0'
 }
 
 group = 'io.github.blinford'
@@ -48,5 +49,11 @@ publishing {
 				password = System.getenv("GITHUB_TOKEN")
 			}
 		}
+	}
+}
+
+jib {
+	to {
+		image = "gcr.io/web-app-413516/web-app"
 	}
 }
